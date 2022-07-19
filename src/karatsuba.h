@@ -3,7 +3,10 @@
 # include <string>
 # include <iostream>
 # include <algorithm>
- 
+/**
+ * @brief https://en.wikipedia.org/wiki/Karatsuba_algorithm
+ * call multiplication() after construction
+ */
 class Karatsuba {
 private:
     bool positive = true;

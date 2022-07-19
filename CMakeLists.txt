@@ -8,4 +8,4 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 file(GLOB project_SRCS src/*.cpp) #src/*.h
 
 # Add project executable
-add_executable(integer_multiplication ${project_SRCS})
+add_executable(run ${project_SRCS})

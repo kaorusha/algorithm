@@ -1,11 +1,12 @@
-#include <iostream>
-#include "karatsuba.h"
+#include "count_split_inv.h"
 
 int main ()
 {
-    std::string a = "3141592653589793238462643383279502884197169399375105820974944592";
-    std::string b = "2718281828459045235360287471352662497757247093699959574966967627";
-    Karatsuba calc(a,b);
-    std::cout << calc.multiplication() << "\n";
+    CountSplitInv test;
+    std::vector<int> v;
+    //bool result = test.read_vector_data("../data/_bcb5c6658381416d19b01bfc1d3993b5_IntegerArray.txt", v);
+    //if (!result) std::cout << "fail reading data!\n";
+    v = {5,3,1,6,4,2};
+    std::cout << test.count_split_inv(v) << "\n";
     return 0;
 }
