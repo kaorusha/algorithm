@@ -2,11 +2,10 @@
 
 int main ()
 {
-    CountSplitInv test;
+    SplitInv test;
     std::vector<int> v;
-    //bool result = test.read_vector_data("../data/_bcb5c6658381416d19b01bfc1d3993b5_IntegerArray.txt", v);
-    //if (!result) std::cout << "fail reading data!\n";
-    v = {5,3,1,6,4,2};
-    std::cout << test.count_split_inv(v) << "\n";
+    bool result = test.ReadVectorData("../data/_bcb5c6658381416d19b01bfc1d3993b5_IntegerArray.txt", v);
+    if (!result) std::cout << "fail reading data!\n";
+    std::cout << test.MergeSort(0,v.size()-1,v) << "\n";
     return 0;
 }

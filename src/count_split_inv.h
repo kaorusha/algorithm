@@ -1,10 +1,9 @@
-# ifndef COUNT_SPLIT_INV_H_
-# define COUNT_SPLIT_INV_H_
+# ifndef SPLIT_INV_H_
+# define SPLIT_INV_H_
 # include <vector>
 # include <iostream>
 # include <fstream>
-# include <algorithm>
-class CountSplitInv {
+class SplitInv {
 private:
     template <class T>
     void print(T& v) {
@@ -12,14 +11,14 @@ private:
         std::cout << "\n";
     }
 public:
-    CountSplitInv () {}
+    SplitInv () {}
     /**
      * @brief Read vector<int> data from a file
      * 
      * @param file_name Name of file containing control measurements.
      * @return True if opening and reading file was successful
      */
-    inline bool read_vector_data (const std::string& file_name,
+    inline bool ReadVectorData (const std::string& file_name,
                                        std::vector<int>& v) {
         // Get file of integers
         std::ifstream is(file_name.c_str(), std::ifstream::in);
@@ -35,24 +34,56 @@ public:
         }
         return true;
     }
-    int count_split_inv (std::vector<int>& v) {
-        int n = v.size();
-        std::sort(v.begin(), v.begin() + n / 2);
-        std::sort(v.begin() + n / 2, v.end());
-        int i = 0;
-        int j = n/2;
-        int ans = 0;
+    /**
+     * @brief top down recursive to merge left and right sorted vector. 
+     * Constraint: index is less than INT_MAX
+     * @param l first index
+     * @param r last index
+     * @param v vector
+     * @return long int counted inversions
+     */
+    long MergeSort (int l, int r, std::vector<int>& v) {
+        long count = 0;
+        if (l < r)  {
+            auto m = l + (r - l)/2;
+            count += MergeSort(l, m, v);
+            count += MergeSort(m+1, r, v);
+            count += CountSplitInv (l, r, v);
+        }
+        return count;
+    }
+    /**
+     * @brief merge and sort two vectors, simultaneously count inversions
+     * 
+     * @param l first index
+     * @param r last index
+     * @param v vector
+     * @return long int counted inversions  
+     */
+    long CountSplitInv (int l, int r, std::vector<int>& v) {
+        // merged vector size
+        int n = r - l + 1;
+        int m = l + (r - l)/2 + 1; //the first index of the right half sorted vector
+        std::vector<int> temp;
+        temp.resize(n);
+        int i = l;
+        int j = m; 
+        long ans = 0;
         // doing merge and count
         for (int k = 0; k < n; ++k) {
-            if (v[i] < v[j]) {
-                ++i;
-            } else { // the elements are distinctive
-                ans += (n/2 - i);
-                ++j;
-            }
+            if (i < m && j <= r) {
+                if (v[i] < v[j]) {
+                    temp[k] = v[i++];
+                } else { // vector contains distinct value, i and j are distinctive
+                    temp[k] = v[j++];
+                    ans += (m - i);
+                }
+            } else if (i < m) temp[k] = v[i++];
+            else temp[k] = v[j++];
         }
+        std::swap_ranges(v.begin() + l, v.begin() + r + 1, temp.begin());
         return ans;
     }
     
 };
-# endif /* COUNT_SPLIT_INV_H_ */
+# endif /* SPLIT_INV_H_ */
