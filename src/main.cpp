@@ -1,11 +1,11 @@
-#include "count_split_inv.h"
-#include "util.h"
+#include "quick_sort.h"
 
 int main ()
 {
     std::vector<int> v;
-    bool result = ReadVectorData("../data/_bcb5c6658381416d19b01bfc1d3993b5_IntegerArray.txt", v);
+    bool result = ReadVectorData("../data/_32387ba40b36359a38625cbb397eee65_QuickSort.txt", v);
     if (!result) std::cout << "fail reading data!\n";
-    
+    QuickSort test;
+    std::cout << test.Sort(v, 0, v.size()-1, test.median) << "\n ";
     return 0;
 }
