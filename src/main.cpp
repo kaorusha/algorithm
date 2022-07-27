@@ -1,11 +1,11 @@
-#include "quick_sort.h"
+#include "karger_min_cut.h"
 
 int main ()
 {
-    std::vector<int> v;
-    bool result = ReadVectorData("../data/_32387ba40b36359a38625cbb397eee65_QuickSort.txt", v);
+    Graph graph;
+    KargerMinCut test;
+    bool result = test.ReadGraphData("../data/_f370cd8b4d3482c940e4a57f489a200b_kargerMinCut.txt", graph); 
     if (!result) std::cout << "fail reading data!\n";
-    QuickSort test;
-    std::cout << test.Sort(v, 0, v.size()-1, test.median) << "\n ";
+    std::cout << test.CountMinCut(graph) << "\n";
     return 0;
 }
