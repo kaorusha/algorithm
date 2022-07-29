@@ -1,11 +1,13 @@
-#include "karger_min_cut.h"
+#include "scc.h"
 
 int main ()
 {
     Graph graph;
-    KargerMinCut test;
-    bool result = test.ReadGraphData("../data/_f370cd8b4d3482c940e4a57f489a200b_kargerMinCut.txt", graph); 
-    if (!result) std::cout << "fail reading data!\n";
-    std::cout << test.CountMinCut(graph) << "\n";
+    Graph graph_rev;
+    SCC test(12);
+    const std::string file = "../data/test1_9_33300.txt"; // node num = 875714
+    if (!test.ReadGraphData(file, graph)) std::cout << "fail reading data!\n";
+    if (!test.ReadGraphData(file, graph_rev, true)) std::cout << "fail reading data!\n";        
+    //test.findSCC(graph);
     return 0;
 }
