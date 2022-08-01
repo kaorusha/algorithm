@@ -1,5 +1,5 @@
-# ifndef SCC_H_
-# define SCC_H_
+# ifndef KOSARAJU_H_
+# define KOSARAJU_H_
 # include <sstream>
 # include <fstream>
 # include <iostream>
@@ -7,7 +7,7 @@
 # include <unordered_map>
 
 typedef std::unordered_map<int, std::vector<int>> Graph;
-class SCC {
+class Kosaraju {
 private:
     std::vector<bool> visit;
     std::vector<int> f;
@@ -17,7 +17,7 @@ private:
     int s;
     int max_vertex_num;
 public:
-    SCC (int n):t(0), s(0), max_vertex_num(n) {}
+    Kosaraju (int n):t(0), s(0), max_vertex_num(n) {}
     void setVertexNum(int n) {
         this->leader.resize(n + 1);
         this->f.resize(n + 1);
@@ -98,6 +98,12 @@ public:
         for (auto i:v) std::cout << i << ", ";
         std::cout << "\n";
     }
+    /**
+     * @brief given graph and reverse graph, find the top 5 strongly connected components (SCC)
+     * 
+     * @param g graph data
+     * @param g_rev reversed graph data
+     */
     void findSCC (Graph& g, Graph& g_rev) {
         SetFinishingTime(g_rev);
         std::cout << "set finishing time done.\n";
