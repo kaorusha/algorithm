@@ -1,4 +1,4 @@
-#include "scc.h"
+#include "kosaraju.h"
 
 int main ()
 {
