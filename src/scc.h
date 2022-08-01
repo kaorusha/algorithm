@@ -55,15 +55,10 @@ public:
         std::cout << "done reading graph data with " << graph.size() << " vertices.\n";
         return true;
     }
-    /*
     void reverseDFS (Graph& g, int i) {
         visit[i] = true;
-        //if (this->s == 0) this->s = i;
-        //this->leader[i] = this->s; 
-        for (auto& edge:g) {
-            if (edge.second == i && !visit[edge.first]) {
-                reverseDFS(g, edge.first);
-            }
+        for (auto& next_vertex:g[i]) {
+            if (!visit[next_vertex]) reverseDFS(g, next_vertex);
         }
         ++this->t;
         this->f[i] = this->t;
@@ -72,7 +67,6 @@ public:
     void SetFinishingTime(Graph& g) {
         for (int i = this->max_vertex_num; i > 0; --i) {
             if (!visit[i]) {
-                if (this->s == 0) this->s = i;
                 reverseDFS(g, i);
             }
         }
@@ -80,10 +74,8 @@ public:
     void DFS (Graph& g, int i) {
         visit[i] = false;
         this->leader[i] = this->s;
-        for (auto& edge:g) {
-            if (edge.first == i && visit[edge.second]) {
-                DFS(g, edge.second);
-            }
+        for (auto& next_vertex:g[i]) {
+            if (visit[next_vertex]) DFS(g, next_vertex);
         }
     }
     void SetLeader(Graph& g) {
@@ -94,7 +86,7 @@ public:
                 DFS(g, deepest_vertex);
             }
         }
-    }*/
+    }
     void print(Graph& g) {
         for (auto& i:g) {
             std::cout << i.first << "\t";
@@ -106,9 +98,8 @@ public:
         for (auto i:v) std::cout << i << ", ";
         std::cout << "\n";
     }
-    /*
-    void findSCC (Graph& g) {
-        SetFinishingTime(g);
+    void findSCC (Graph& g, Graph& g_rev) {
+        SetFinishingTime(g_rev);
         std::cout << "set finishing time done.\n";
         SetLeader(g);
         //print(this->f);
@@ -142,6 +133,5 @@ public:
         }        
         print(top);
     }
-    */
 };
 # endif /* SCC_H_ */
