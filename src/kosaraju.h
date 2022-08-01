@@ -7,6 +7,21 @@
 # include <unordered_map>
 
 typedef std::unordered_map<int, std::vector<int>> Graph;
+/**
+ * @brief Kosaraju algorithm (the key: scc is the same for reversed graph)
+ * example:
+int main ()
+{
+    Graph graph;
+    Graph graph_rev;
+    Kosaraju test(875714);
+    const std::string file = "../data/_410e934e6553ac56409b2cb7096a44aa_SCC.txt"; // node num = 875714
+    if (!test.ReadGraphData(file, graph)) std::cout << "fail reading data!\n";
+    if (!test.ReadGraphData(file, graph_rev, true)) std::cout << "fail reading data!\n";        
+    test.findSCC(graph, graph_rev);
+    return 0;
+} 
+ */
 class Kosaraju {
 private:
     std::vector<bool> visit;
@@ -17,13 +32,32 @@ private:
     int s;
     int max_vertex_num;
 public:
+/**
+ * @brief Construct a new Kosaraju object
+ * 
+ * @param n the number of vertices on the graph
+ */
     Kosaraju (int n):t(0), s(0), max_vertex_num(n) {}
+/**
+ * @brief Set the Vertex Num object to prepare the bookkeeping vectors
+ * 
+ * @param n 
+ */
     void setVertexNum(int n) {
         this->leader.resize(n + 1);
         this->f.resize(n + 1);
         this->visit.resize(n + 1);
         this->depth_order.resize(n+1);
     }
+/**
+ * @brief read and store graph data
+ * 
+ * @param file_name 
+ * @param graph address to store the data
+ * @param reverse weather to reverse the direction of the graph
+ * @return true if the file is open and parsed
+ * @return false if fail opening the file
+ */
     inline bool ReadGraphData (const std::string& file_name, Graph& graph, bool reverse = false) {
         // Get file of integers
         std::ifstream is(file_name.c_str(), std::ifstream::in);
@@ -51,7 +85,6 @@ public:
             graph[from].emplace_back(to);
         }
         is.close();
-        setVertexNum(this->max_vertex_num);
         std::cout << "done reading graph data with " << graph.size() << " vertices.\n";
         return true;
     }
@@ -64,6 +97,11 @@ public:
         this->f[i] = this->t;
         this->depth_order[this->t] = i;
     }
+/**
+ * @brief Set the Finishing Time object to find the order of depth of sink vertices
+ * 
+ * @param g reversed graph
+ */
     void SetFinishingTime(Graph& g) {
         for (int i = this->max_vertex_num; i > 0; --i) {
             if (!visit[i]) {
@@ -78,6 +116,11 @@ public:
             if (visit[next_vertex]) DFS(g, next_vertex);
         }
     }
+/**
+ * @brief Set the Leader object, grouping ssc with leader sink vertex
+ * 
+ * @param g original graph
+ */
     void SetLeader(Graph& g) {
         for (int i = this->max_vertex_num; i > 0; --i) {
             int deepest_vertex = this->depth_order[i];
@@ -98,13 +141,14 @@ public:
         for (auto i:v) std::cout << i << ", ";
         std::cout << "\n";
     }
-    /**
-     * @brief given graph and reverse graph, find the top 5 strongly connected components (SCC)
-     * 
-     * @param g graph data
-     * @param g_rev reversed graph data
-     */
+/**
+ * @brief given graph and reverse graph, find the top 5 strongly connected components (SCC)
+ * 
+ * @param g graph data
+ * @param g_rev reversed graph data
+ */
     void findSCC (Graph& g, Graph& g_rev) {
+        setVertexNum(this->max_vertex_num);
         SetFinishingTime(g_rev);
         std::cout << "set finishing time done.\n";
         SetLeader(g);
