@@ -1,13 +1,12 @@
-#include "kosaraju.h"
+#include "dijkstra_shortest_path.h"
 
 int main ()
 {
-    Graph graph;
-    Graph graph_rev;
-    Kosaraju test(875714);
-    const std::string file = "../data/_410e934e6553ac56409b2cb7096a44aa_SCC.txt"; // node num = 875714
-    if (!test.ReadGraphData(file, graph)) std::cout << "fail reading data!\n";
-    if (!test.ReadGraphData(file, graph_rev, true)) std::cout << "fail reading data!\n";        
-    test.findSCC(graph, graph_rev);
+    DijkstraShortestPath test(200, 1000000);
+    test.readGraphData("../data/_dcf1d02570e57d23ab526b1e33ba6f12_dijkstraData.txt");
+    //test.printGraph();
+    test.shortestPath(1);
+    int order[] = {7,37,59,82,99,115,133,165,188,197}; // some interested goal vertex
+    test.printDist();
     return 0;
 }
