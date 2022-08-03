@@ -112,20 +112,23 @@ public:
         pq.push(std::make_pair(source, 0));
         dist[source] = 0;
         while (!pq.empty()) {
+            // O(log(n)) get smallest distance from priority queue
             auto nearest = pq.top().first;
             visit[nearest] = true;
             pq.pop();
             for (auto& adj:graph[nearest]) {
+                // update the distance
                 if (dist[adj.first] > dist[nearest] + adj.second) {
                     dist[adj.first] = dist[nearest] + adj.second;
+                    // if distance is updated, it need to be revisit
                     visit[adj.first] = false;
                 }
                 if (!visit[adj.first]) {
+                    // add reachable vertices to the heap
                     pq.push(std::make_pair(adj.first, dist[adj.first]));
                     visit[adj.first] = true;
                 }
             }
-            
         }
     }
 /**
