@@ -1,12 +1,16 @@
-#include "dijkstra_shortest_path.h"
+#include "median_maintenance.h"
+#include "util.h"
 
 int main ()
 {
-    DijkstraShortestPath test(200, 1000000);
-    test.readGraphData("../data/_dcf1d02570e57d23ab526b1e33ba6f12_dijkstraData.txt");
-    //test.printGraph();
-    test.shortestPath(1);
-    int order[] = {7,37,59,82,99,115,133,165,188,197}; // some interested goal vertex
-    test.printDist();
-    return 0;
+    MediumMaintenance test;
+    std::vector<int> v;
+    if (!ReadVectorData("../data/_6ec67df2804ff4b58ab21c12edcb21f8_Median.txt", v))
+        std::cout << "fail reading data\n";
+    int ans = 0;
+    for (auto& i:v) {
+        auto m = test.update(i);
+        ans += m;
+    }
+    std::cout << ans << "\n";
 }
