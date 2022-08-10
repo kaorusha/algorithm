@@ -3,11 +3,23 @@
 # include <vector>
 # include <iostream>
 # include <fstream>
-
+# include <sstream>
 template <class T>
-void print(T& v) {
-    for (auto& i:v) std::cout<< i << ", ";
+void print(std::pair<T, T>& pair) {
+    std::cout << pair.first << ", " << pair.second << "\t";
+}
+template <class T>
+void print(std::vector<T>& v) {
+    for (auto& i:v) std::cout << i << ", ";
     std::cout << "\n";
+}
+template <class T>
+void printGraph(std::vector<T>& graph) {
+    for (int i = 0; i < graph.size(); ++i) {
+        std::cout << i << "\t";
+        for (auto& i:graph[i]) print(i);
+        std::cout << "\n";
+    }
 }
 
 long stoT(std::string& s) {

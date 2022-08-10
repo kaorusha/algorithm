@@ -1,15 +1,14 @@
-#include "greedy_scheduling.h"
-#include "util.h"
+#include "Prims_minimum_spanning_tree.h"
 
 int main ()
 {
-    std::vector<std::pair<int,int>> v;
-    GreedyScheduling test;
-    if(test.ReadWeightLength("../data/_642c2ce8f3abe387bdff636d708cdb26_jobs.txt", v))
-        std::cout << "read data with " << v.size() << " elements\n";
-    test.SortByDifference(v);
-    std::cout << "sort by difference completion time = "<< test.CompletionTime(v) << std::endl;
-    test.SortByRatio(v);
-    std::cout << "sort by ratio completion time = "<< test.CompletionTime(v) << std::endl;
+    PrimsMinimumSpanningTree test(INT32_MAX);
+    Graph g;
+    if(test.ReadGraph("../data/_d4f3531eac1d289525141e95a2fea52f_edges.txt", g));
+        std::cout << "read data with " << g.size() << " elements\n";
+    //printGraph(g);
+    test.findMST(g, 1);
+    std::cout << test.cost() << "\n";
+
     return 0;
 }
