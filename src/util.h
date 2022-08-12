@@ -49,27 +49,17 @@ inline bool ReadVectorData (const std::string& file_name, T& v) {
     return true;
 }
 /**
- * @brief the next vertex this edge point to and its weight or cost for choosing this path
- * [vertex, wright]
- */
-typedef std::pair<int, int> Edge;
-typedef std::vector<std::vector<Edge>> Graph;
-/**
- * @brief read graph data from file
+ * @brief 
  * 
- * @param file_name This file describes an undirected graph with integer edge costs.  It has the format
-
-[number_of_nodes] [number_of_edges]
-
-[one_node_of_edge_1] [other_node_of_edge_1] [edge_1_cost]
-
-[one_node_of_edge_2] [other_node_of_edge_2] [edge_2_cost]
-* @param graph storage address 
-* @return true 
-* @return false 
-*/
-template <class T>
-inline bool ReadEdgeData (const std::string& file_name, T& graph, int& vertex_num, int& edge_num) {
+ * @tparam Obj
+ * @param file_name 
+ * @param has_header_line if the first line has to process separately
+ * @param o object contains the method for processing each line of the file, and also storage space
+ * @return true 
+ * @return false 
+ */
+template <class Obj>
+inline bool ReadData (const std::string& file_name, bool has_header_line, Obj& o) {
     // Get file of integers
     std::ifstream is(file_name.c_str(), std::ifstream::in);
     // Return if we can't open the file
@@ -79,21 +69,12 @@ inline bool ReadEdgeData (const std::string& file_name, T& graph, int& vertex_nu
     std::string line;
 
     // read first line
-    std::getline(is, line);
-    std::istringstream ss(line);
-    ss >> vertex_num >> edge_num;
-    graph.resize(m + 1);
-    // Run over each single line:
-    while (std::getline(is, line)) {
-        int one, another, weight;
-        std::istringstream ss(line);
-        ss >> one >> another >> weight;
-        if (one > vertex_num || another > vertex_num)
-            std::cout << "warning: vertex babel exceed vertex number\n";
-        // since the graph is undirected
-        graph[one].emplace_back(Edge{another, weight});
-        graph[another].emplace_back(Edge{one, weight});
+    if (has_header_line) {
+        std::getline(is, line);
+        o.ProcessHeader(line);
     }
+    // Run over each single line:
+    while (std::getline(is, line)) o.ProcessLine(line);
     return true;
 }
 
