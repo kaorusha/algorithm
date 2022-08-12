@@ -2,12 +2,6 @@
 # define PRIMS_MINIMUM_SPANNING_TREE_H_
 # include "util.h"
 /**
- * @brief the next vertex this edge point to and its weight or cost for choosing this path
- * [vertex, wright]
- */
-typedef std::pair<int, int> Edge;
-typedef std::vector<std::vector<Edge>> Graph;
-/**
  * @brief Prim's minimum spanning tree algorithm
  * example: 
 int main ()
@@ -37,46 +31,8 @@ public:
      * 
      */
     PrimsMinimumSpanningTree(int max_weight):max_w(max_weight) {}
-    /**
-     * @brief read graph data from file
-     * 
-     * @param file_name This file describes an undirected graph with integer edge costs.  It has the format
-
-[number_of_nodes] [number_of_edges]
-
-[one_node_of_edge_1] [other_node_of_edge_1] [edge_1_cost]
-
-[one_node_of_edge_2] [other_node_of_edge_2] [edge_2_cost]
-     * @param graph storage address 
-     * @return true 
-     * @return false 
-     */
-    inline bool ReadGraph (const std::string& file_name, Graph& graph) {
-        // Get file of integers
-        std::ifstream is(file_name.c_str(), std::ifstream::in);
-        // Return if we can't open the file
-        if (!is) return false;
-
-        // Declare single line of file:
-        std::string line;
-
-        // read first line
-        std::getline(is, line);
-        std::istringstream ss(line);
-        ss >> this->vertex_num >> this->edge_num;
-        graph.resize(this->vertex_num + 1);
-        // Run over each single line:
-        while (std::getline(is, line)) {
-            int one, another, weight;
-            std::istringstream ss(line);
-            ss >> one >> another >> weight;
-            if (one > this->vertex_num || another > this->vertex_num)
-                std::cout << "warning: vertex babel exceed vertex number\n";
-            // since the graph is undirected
-            graph[one].emplace_back(Edge{another, weight});
-            graph[another].emplace_back(Edge{one, weight});
-        }
-        return true;
+    inline bool ReadGraph(std::string& file_name, Graph& g) {
+        return ReadEdgeData(file_name, g, this->vertex_num, this->edge_num);
     }
     /**
      * @brief given an graph and starting vertex, find the minimum spanning tree from 
