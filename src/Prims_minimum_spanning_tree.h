@@ -15,12 +15,6 @@ int main ()
     return 0;
 }
  */
-/**
- * @brief the next vertex this edge point to and its weight or cost for choosing this path
- * [vertex, wright]
- */
-typedef std::pair<int, int> Edge;
-typedef std::vector<std::vector<Edge>> Graph;
 class PrimsMinimumSpanningTree {
 private:
     int vertex_num;
@@ -29,6 +23,12 @@ private:
     std::vector<bool> visit;
     std::vector<int> key;
     int max_w;
+    /**
+     * @brief the next vertex this edge point to and its weight or cost for choosing this path
+     * [vertex, wright]
+     */
+    typedef std::pair<int, int> Edge;
+    typedef std::vector<std::vector<Edge>> Graph;
     Graph graph;
 public:
     /**
