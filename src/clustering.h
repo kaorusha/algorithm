@@ -13,14 +13,8 @@ private:
     Graph graph; 
 public:
     Clustering () {}
-    /**
-     * @brief Set the Vertex Num object
-     * 
-     * @param v 
-     */
-    void SetVertexNum(int v) { this->vertex_num = v;}
     void ProcessHeader(std::string line) {
-        SetVertexNum(stoi(line));
+        this->vertex_num = std::stoi(line);
         this->cluster_num = this->vertex_num; 
     }
     /**
