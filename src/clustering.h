@@ -6,6 +6,7 @@ class Clustering {
 private:
     int vertex_num;
     std::vector<int> leader;
+    std::vector<int> rank;
     int cluster_num;
     typedef std::pair<int,int> Edge;
     typedef std::vector<std::pair<Edge,int>> Graph;
@@ -42,28 +43,46 @@ public:
     int GreedyKruskalMST(int desired_cluster_num) {
         // at the beginning the leader points to vertex itself
         for (int i = 0; i <= this->cluster_num; ++i) this->leader.emplace_back(i);
+        // at the beginning the rank for each vertex is 0
+        this->rank.resize(this->vertex_num+1, 0);
         std::sort(graph.begin(), graph.end(), [](auto& a, auto& b){ return (a.second < b.second); });
         int i = 0;
+        //printGraph(graph);
         while (this->cluster_num > desired_cluster_num) {
             Merge(graph[i].first);
             ++i;
         }
         // next distance
+        --i;
+        while ( Find(graph[i].first.first) == Find(graph[i].first.second)) ++i;
         return graph[i].second;
+    }
+    // find the root of this cluster
+    int Find(int x) {
+        int parent = this->leader[x];
+        if (parent != x) {
+            while (parent != this->leader[parent]) parent = this->leader[parent];
+        }
+        return parent;
+    }
+    // union two cluster into one
+    void Union (int x, int y) {
+        // change root
+        if ( x != y) {
+            // if two rank is the same, add 1 to one of them 
+            if (this->rank[x] == this->rank[y]) ++this->rank[x];
+            // make vertex with higher rank as new root
+            if (this->rank[x] > this->rank[y]) this->leader[y] = x;
+            else this->leader[x] = y;
+            --this->cluster_num;
+        }
     }
     void Merge(Edge& edge) {
         int node_1 = edge.first;
         int node_2 = edge.second;
-        int parent = this->leader[node_2];
-        // change leader of leaf
-        while (parent != this->leader[parent]) {
-            parent = this->leader[parent];
-            this->leader[parent] = node_1;
-        }
-        // change root
-        this->leader[parent] = node_1;
-        --this->cluster_num;
-        print(this->leader);
+        int root_1 = Find(node_1);
+        int root_2 = Find(node_2);
+        Union(root_1, root_2);
     }
     int GetEdgeSize() { return graph.size(); }
     

@@ -13,11 +13,19 @@ void print(std::vector<T>& v) {
     for (auto& i:v) std::cout << i << ", ";
     std::cout << "\n";
 }
+void print(int i) { std::cout << i;}
+template <class A, class B>
+void print(std::pair<A, B>& pair) {
+    print(pair.first);
+    std::cout << ", " ;
+    print(pair.second);
+    std::cout << "\t";
+}
 template <class T>
 void printGraph(std::vector<T>& graph) {
     for (int i = 0; i < graph.size(); ++i) {
         std::cout << i << "\t";
-        for (auto& i:graph[i]) print(i);
+        print(graph[i]);
         std::cout << "\n";
     }
 }
