@@ -2,6 +2,18 @@
 # define CLUSTERING_H_
 # include "util.h"
 # include <algorithm>
+/**
+ * @brief use lazy union find for clustering, dominated by sorting complexity O(nlog(n))
+ * example:
+ * int main ()
+{
+    Clustering test;
+    if(ReadData("../data/_fe8d0202cd20a808db6a4d5d06be62f4_clustering1.txt", true, test))
+        std::cout << "read data with " << test.GetEdgeSize() << " elements\n";
+    std::cout << test.GreedyKruskalMST(4) << "\n";
+    return 0;
+}
+ */
 class Clustering {
 private:
     int vertex_num;
@@ -57,7 +69,7 @@ public:
         while ( Find(graph[i].first.first) == Find(graph[i].first.second)) ++i;
         return graph[i].second;
     }
-    // find the root of this cluster
+    // find the root of this cluster, complexity O(logN)
     int Find(int x) {
         int parent = this->leader[x];
         if (parent != x) {
@@ -65,7 +77,7 @@ public:
         }
         return parent;
     }
-    // union two cluster into one
+    // union two cluster into one, complexity O(1)
     void Union (int x, int y) {
         // change root
         if ( x != y) {
