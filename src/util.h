@@ -10,10 +10,10 @@ void print(std::pair<T, T>& pair) {
 }
 template <class T>
 void print(std::vector<T>& v) {
-    for (auto& i:v) std::cout << i << ", ";
+    for (auto& i:v) print(i);
     std::cout << "\n";
 }
-void print(int i) { std::cout << i;}
+void print(int& i) { std::cout << i << ", ";}
 template <class A, class B>
 void print(std::pair<A, B>& pair) {
     print(pair.first);
