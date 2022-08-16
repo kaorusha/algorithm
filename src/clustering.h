@@ -2,6 +2,18 @@
 # define CLUSTERING_H_
 # include "util.h"
 # include <algorithm>
+/**
+ * @brief use lazy union find for clustering, dominated by sorting complexity O(nlog(n))
+ * example:
+ * int main ()
+{
+    Clustering test;
+    if(ReadData("../data/_fe8d0202cd20a808db6a4d5d06be62f4_clustering1.txt", true, test))
+        std::cout << "read data with " << test.GetEdgeSize() << " elements\n";
+    std::cout << test.GreedyKruskalMST(4) << "\n";
+    return 0;
+}
+ */
 class Clustering {
 private:
     int vertex_num;
@@ -13,9 +25,17 @@ private:
     Graph graph; 
 public:
     Clustering () {}
+    void InitBookkeeping (int v) {
+        // at the beginning the leader points to vertex itself
+        for (int i = 0; i <= v; ++i) this->leader.emplace_back(i);
+        // at the beginning the rank for each vertex is 0
+        this->rank.resize(v+1, 0);
+    }
+    void SetClusterNum(int n) {this->cluster_num = n;}
+    int GetClusterNum() {return this->cluster_num;}
     void ProcessHeader(std::string line) {
         this->vertex_num = std::stoi(line);
-        this->cluster_num = this->vertex_num; 
+        SetClusterNum(this->vertex_num);
     }
     /**
      * @brief This file describes a distance function (equivalently, a complete graph with edge costs).  It has the following format:
@@ -41,15 +61,12 @@ public:
      * @param desired_cluster_num 
      */
     int GreedyKruskalMST(int desired_cluster_num) {
-        // at the beginning the leader points to vertex itself
-        for (int i = 0; i <= this->cluster_num; ++i) this->leader.emplace_back(i);
-        // at the beginning the rank for each vertex is 0
-        this->rank.resize(this->vertex_num+1, 0);
+        InitBookkeeping(this->vertex_num); 
         std::sort(graph.begin(), graph.end(), [](auto& a, auto& b){ return (a.second < b.second); });
         int i = 0;
         //printGraph(graph);
         while (this->cluster_num > desired_cluster_num) {
-            Merge(graph[i].first);
+            Merge(graph[i].first.first, graph[i].first.second);
             ++i;
         }
         // next distance
@@ -77,12 +94,10 @@ public:
             --this->cluster_num;
         }
     }
-    void Merge(Edge& edge) {
-        int node_1 = edge.first;
-        int node_2 = edge.second;
-        int root_1 = Find(node_1);
-        int root_2 = Find(node_2);
-        Union(root_1, root_2);
+    void Merge(int x, int y) {
+        int root_x = Find(x);
+        int root_y = Find(y);
+        Union(root_x, root_y);
     }
     int GetEdgeSize() { return graph.size(); }
     
