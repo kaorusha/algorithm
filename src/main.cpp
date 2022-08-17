@@ -1,10 +1,10 @@
-#include "clustering_big.h"
+#include "huffman_codes.h"
 
 int main ()
 {
-    ClusteringBig test;
-    if(!ReadData("../data/_fe8d0202cd20a808db6a4d5d06be62f4_clustering_big.txt", true, test))
+    HuffmanCodes test;
+    if(!ReadData("../data/_eed1bd08e2fa58bbe94b24c06a20dcdb_huffman.txt", true, test))
         std::cout << "fail opening file";
-    std::cout << "cluster num: " << test.MergeDistance() << "\n";
+    test.Run();
     return 0;
 }
