@@ -1,10 +1,11 @@
-#include "huffman_codes.h"
+#include "dynamic_programing.h"
 
 int main ()
 {
-    HuffmanCodes test;
-    if(!ReadData("../data/_eed1bd08e2fa58bbe94b24c06a20dcdb_huffman.txt", true, test))
+    DynamicPrograming test;
+    if(!ReadData("../data/_790eb8b186eefb5b63d0bf38b5096873_mwis.txt", true, test))
         std::cout << "fail opening file";
-    test.Run();
+    std::vector<int> v = {1, 2, 3, 4, 17, 117, 517, 97};
+    test.PrintIndex(v);
     return 0;
 }

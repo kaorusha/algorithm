@@ -4,6 +4,11 @@
 # include <iostream>
 # include <fstream>
 # include <sstream>
+void print(int& i) { std::cout << i << ", ";}
+void print(std::vector<bool>& v) {
+    for (bool i:v) std::cout << i << ", ";
+    std::cout << "\n";
+}
 template <class T>
 void print(std::pair<T, T>& pair) {
     std::cout << pair.first << ", " << pair.second << "\t";
@@ -13,7 +18,6 @@ void print(std::vector<T>& v) {
     for (auto& i:v) print(i);
     std::cout << "\n";
 }
-void print(int& i) { std::cout << i << ", ";}
 template <class A, class B>
 void print(std::pair<A, B>& pair) {
     print(pair.first);
