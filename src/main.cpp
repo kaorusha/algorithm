@@ -1,11 +1,10 @@
-#include "dynamic_programing.h"
+#include "knapsack.h"
 
 int main ()
 {
-    DynamicPrograming test;
-    if(!ReadData("../data/_790eb8b186eefb5b63d0bf38b5096873_mwis.txt", true, test))
+    Knapsack test;
+    if(!ReadData("../data/_6dfda29c18c77fd14511ba8964c2e265_knapsack_big.txt", true, test))
         std::cout << "fail opening file";
-    std::vector<int> v = {1, 2, 3, 4, 17, 117, 517, 97};
-    test.PrintIndex(v);
+    std::cout << test.MaxValue() << "\n";
     return 0;
 }
