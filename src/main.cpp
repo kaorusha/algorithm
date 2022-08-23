@@ -1,10 +1,9 @@
-#include "knapsack.h"
+#include "optimal_BST.h"
 
 int main ()
 {
-    Knapsack test;
-    if(!ReadData("../data/_6dfda29c18c77fd14511ba8964c2e265_knapsack_big.txt", true, test))
-        std::cout << "fail opening file";
-    std::cout << test.MaxValue() << "\n";
+    OptimalBST test;
+    std::vector<int> v = {20, 5, 17, 10, 20, 3, 25};
+    std::cout << test.FindMinCost(v) << "\n";
     return 0;
 }
