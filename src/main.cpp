@@ -1,9 +1,10 @@
-#include "optimal_BST.h"
+#include "all-pairs_shortest-path.h"
 
 int main ()
 {
-    OptimalBST test;
-    std::vector<int> v = {20, 5, 17, 10, 20, 3, 25};
-    std::cout << test.FindMinCost(v) << "\n";
+    AllPairsShortestPath test;
+    if (!ReadData("../data/_6ff856efca965e8774eb18584754fd65_g3.txt", true, test))
+        std::cout << "fail reading data.\n";
+    std::cout<< test.ShortestShortestPath() << "\n";
     return 0;
 }
