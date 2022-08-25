@@ -28,9 +28,8 @@ public:
     DijkstraShortestPath test(200, 1000000);
     test.readGraphData("../data/_dcf1d02570e57d23ab526b1e33ba6f12_dijkstraData.txt");
     //test.printGraph();
-    test.shortestPath(1);
     int order[] = {7,37,59,82,99,115,133,165,188,197}; // some interested goal vertex
-    test.printDist();
+    test.printDist(order, 1);
     return 0;
 }
  */
@@ -40,8 +39,7 @@ private:
     int inf_dist;
     typedef std::vector<std::vector<std::pair<int, int>>> Graph;
     Graph graph;
-    std::vector<int> dist;
-    std::vector<bool> visit;
+    
 public:
 /**
  * @brief Construct a new Dijkstra Shortest Path object
@@ -49,7 +47,10 @@ public:
  * @param n the largest vertex label
  * @param dist when the vertex is unreachable from source, use this value
  */
-    DijkstraShortestPath(int n, int dist): vertex_num(n), inf_dist(dist) {}
+    DijkstraShortestPath(int n, int dist): vertex_num(n), inf_dist(dist) {
+        // prepare graph space
+        graph.resize(vertex_num + 1);
+    }
 /**
  * @brief graph data represent each line means label followed by its neighbors
  * represented as pair {adjacent vertex label, distance}.
@@ -69,8 +70,6 @@ public:
         // Declare single line of file
         std::string line;
 
-        // prepare graph space
-        graph.resize(vertex_num + 1);
         // Run over each single line:
         while (std::getline(is, line)) {
             std::replace(line.begin(), line.end(), ',', ' ');
@@ -102,10 +101,13 @@ public:
 /**
  * @brief find the distance from source to other vertices
  * 
- * @param source vertex label 
+ * @param source vertex label
+ * @return array of distance [vertex label] 
  */
-    void shortestPath(int source) {
-        if (source > vertex_num) return;
+    std::vector<int> shortestPath(int source) {
+        std::vector<int> dist;
+        std::vector<bool> visit;
+        if (source > vertex_num) return dist;
         std::priority_queue<std::pair<int,int>, std::vector<std::pair<int,int>>, PairComparison> pq;
         dist.resize(vertex_num+1, inf_dist);
         visit.resize(vertex_num+1, false);
@@ -130,16 +132,16 @@ public:
                 }
             }
         }
+        return dist;
     }
 /**
  * @brief print all distance from source vertex
  * 
  */
-    void printDist() {
+    void printDist(int s) {
         std::cout << "print distances from source(max_dist means unreachable vertices): \n";
-        for (int i = 0; i < dist.size(); ++i) {
-            std::cout << i << "\t" << dist[i] << "\n";
-        }
+        auto dist = shortestPath(s);
+        print(dist);
     }
 /**
  * @brief only print distance to interested goal vertices
@@ -148,12 +150,23 @@ public:
  * @param order goal vertices array
  */
     template <class T>
-    void printDist(T& order) {
+    void printDist(T& order, int s) {
         std::cout << "print distances from source(max_dist means unreachable vertices): \n";
+        auto dist = shortestPath(s);
         for (auto& i:order) {
             std::cout << dist[i] << ",";
         }
         std::cout << "\n";
+    }
+    /**
+     * @brief convert the edge array data into adjacent list 
+     * 
+     * @param tail vertex label
+     * @param head vertex label
+     * @param weight edge length
+     */
+    void AddEdge(int& tail, int& head, int& weight) {
+        this->graph[tail].emplace_back(std::make_pair(head, weight));
     }
 };
 # endif /* DIJKSTRA_H_ */
