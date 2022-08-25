@@ -1,10 +1,8 @@
 # ifndef DIJKSTRA_H_
 # define DIJKSTRA_H_
 # include <queue>
-# include <sstream>
-# include <fstream>
-# include <iostream>
 # include <algorithm>
+# include "util.h"
 /**
  * @brief comparison for priority queue to pop the smallest dist vertex
  * 
