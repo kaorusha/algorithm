@@ -88,9 +88,9 @@ public:
         return 0.0;
     }
 
-    float recursive(std::vector<std::vector<float>>& dp, std::vector<std::vector<float>>& c, int k, int s) {
+    float recursive(std::vector<std::vector<float>>& dp, std::vector<std::vector<float>>& c, int s, int k) {
         // empty subset, this is the last step, return the dist back to source index 1
-        if (s == 0) return c[k][1];
+        if (s == ((1 << k) | 3)) return c[k][1];
 
     }
     int MinimumCost() {
