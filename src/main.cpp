@@ -1,10 +1,10 @@
-#include "all-pairs_shortest-path.h"
+#include "traveling_salesman_problem.h"
 
 int main ()
 {
-    AllPairsShortestPath test;
-    if (!ReadData("../data/_6ff856efca965e8774eb18584754fd65_g3.txt", true, test))
-        std::cout << "fail reading data.\n";
-    std::cout<< test.ShortestShortestPath() << "\n";
+    TravelingSalesmanProblem test;
+    if (!ReadData("../data/_f702b2a7b43c0d64707f7ab1b4394754_tsp.txt", true, test))
+        std::cout << "fail reading data!\n";
+    //std::cout << test.MinimumCost();
     return 0;
 }

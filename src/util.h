@@ -5,6 +5,7 @@
 # include <fstream>
 # include <sstream>
 void print(int& i) { std::cout << i << ", ";}
+void print(float& i) { std::cout << i << ", ";}
 void print(std::vector<bool>& v) {
     for (bool i:v) std::cout << i << ", ";
     std::cout << "\n";
