@@ -20,6 +20,7 @@ struct Point {
     std::cout << test.MinimumCost() << "\n";
     return 0;
 }
+ * reference: https://cloud.tencent.com/developer/article/1103366
  */
 class TravelingSalesmanProblem {
 private:
