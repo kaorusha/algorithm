@@ -9,8 +9,17 @@ struct Point {
     Point(float x, float y):x(x), y(y){}
 };
 /**
- * @brief in progress......
- * 
+ * @brief return the minimum distance of traveling salesman problem by dynamic programing approach.
+ * assume n city with index 0 to n-1
+ * example:
+ * int main ()
+{
+    TravelingSalesmanProblem test;
+    if (!ReadData("../data/_f702b2a7b43c0d64707f7ab1b4394754_tsp.txt", true, test))
+        std::cout << "fail reading data!\n";
+    std::cout << test.MinimumCost() << "\n";
+    return 0;
+}
  */
 class TravelingSalesmanProblem {
 private:
@@ -58,10 +67,10 @@ public:
             std::cout << "modify the size with input point vector size = " << p.size() << "\n";
             this->size = p.size();
         }
-        // distance matrix starts at 1, and 0 is unused
-        std::vector<std::vector<float>> dist(this->size + 1, std::vector<float>(this->size + 1, this->inf));
-        for (int i = 1; i <= this->size; ++i) {
-            for (int j = i; j <= this->size; ++j) {
+        // distance matrix
+        std::vector<std::vector<float>> dist(this->size, std::vector<float>(this->size, this->inf));
+        for (int i = 0; i < this->size; ++i) {
+            for (int j = i; j < this->size; ++j) {
                 if (i == j) dist[i][j] = 0.0;
                 else {
                     dist[i][j] = distance(p[i], p[j]);
@@ -72,31 +81,42 @@ public:
         return dist;
     }
     float DP_TSP (std::vector<std::vector<float>>& c) {
-        int subsets = (1 << (this->size + 1)); // total 2^(n+1) subsets
+        int subsets = (1 << (this->size)); // total 2^n subsets
         // Let A = 2-D array, indexed by subsets S ⊆ {1, 2, . . . , n} that contain 1 and 
         // destinations j ∈ {1, 2, . . . , n}
-        std::vector<std::vector<float>> dp(subsets, std::vector<float>(this->size + 1, this->inf));
+        std::vector<std::vector<float>> dp(subsets, std::vector<float>(this->size, this->inf));
         // Base case:
         // A[S, 1] = 0      if S = {1}
         // A[S, 1] = +∞     otherwise [no way to avoid visiting vertex (twice)]
-        dp[1][1] = 0;
-        for (int s = 2; s <= subsets; ++s) {
-            for (int j = 1; j <= this->size; ++j) {
-                dp[s][j] = recursive(dp, c, s, j);
+        dp[1][0] = 0;
+        // first index means subset: so 0 is empty, and 1 means only first city is in the subset
+        // second index means destination, and 0 means 1st city
+        for (int s = 1; s < subsets; ++s) {
+            // For each set S ⊆ {1, 2, . . . , n} of size >= 2 that contains 1st city
+            if (!(s & 1)) continue; 
+            // For each j ∈ S, j != 1st city (index 0)
+            for (int j = 1; j < this->size; ++j) {
+                // A[S, j] = min (k ∈ S,k != j) {A[S − {j}, k] + c[k][j] }
+                if (s & (1 << j)) continue; // city j has been considered 
+                for (int k = 0; k < this->size; ++k) {
+                    if ((s & (1 << k)) && k != j) {
+                        dp[s | (1 << j)][j] = std::min(dp[s | (1 << j)][j], dp[s][k] + c[k][j]); //[same as recurrence] 
+                        //std::cout << "s = " << s << "\tj = " << j << "\ts|j = " << (s | (1 << j)) << "\n";
+                    }
+                }
             }
         }
-        return 0.0;
+        // min cost from 1st city to j visiting everybody once + cost of final hop of tour
+        float ans = this->inf;
+        for (int j = 1; j < this->size; ++j) {
+            ans = std::min(ans, dp[subsets - 1][j] + c[j][0]);
+        }
+        return ans;
     }
 
-    float recursive(std::vector<std::vector<float>>& dp, std::vector<std::vector<float>>& c, int s, int k) {
-        // empty subset, this is the last step, return the dist back to source index 1
-        if (s == ((1 << k) | 3)) return c[k][1];
-
-    }
-    int MinimumCost() {
+    auto MinimumCost() {
         auto c = FillDistMatrix(this->points);
-
-        return 0;
+        return DP_TSP(c);
     }
 };
 # endif /* TSP_H_ */
