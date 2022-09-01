@@ -15,7 +15,7 @@ struct Edge {
  * int main ()
 {
     AllPairsShortestPath test;
-    if (!ReadData("../data/_6ff856efca965e8774eb18584754fd65_g3.txt", true, test))
+    if (!ReadData("../data/all_pairs_shortest_path/_6ff856efca965e8774eb18584754fd65_g3.txt", true, test))
     // for large test data, use data/_919f8ed0c52d8b5926aa7e3fdecc2d32_large.txt
         std::cout << "fail reading data.\n";
     std::cout<< test.ShortestShortestPath() << "\n";

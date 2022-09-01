@@ -24,7 +24,7 @@ public:
  * int main ()
 {
     DijkstraShortestPath test(200, 1000000);
-    test.readGraphData("../data/_dcf1d02570e57d23ab526b1e33ba6f12_dijkstraData.txt");
+    test.readGraphData("../data/dijkstra/_dcf1d02570e57d23ab526b1e33ba6f12_dijkstraData.txt");
     //test.printGraph();
     int order[] = {7,37,59,82,99,115,133,165,188,197}; // some interested goal vertex
     test.printDist(order, 1);
