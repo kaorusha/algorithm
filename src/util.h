@@ -67,7 +67,8 @@ inline bool ReadVectorData (const std::string& file_name, T& v) {
  * @tparam Obj
  * @param file_name 
  * @param has_header_line if the first line has to process separately
- * @param o object contains the method for processing each line of the file, and also storage space
+ * @param o object contains the method for processing each line of the file, namely, ProcessHeader()
+ *  and ProcessLine(), and also storage space
  * @return true 
  * @return false 
  */
