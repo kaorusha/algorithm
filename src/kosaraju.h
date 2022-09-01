@@ -17,7 +17,7 @@ int main ()
     const std::string file = "../data/scc/_410e934e6553ac56409b2cb7096a44aa_SCC.txt"; // node num = 875714
     if (!test.ReadGraphData(file, graph)) std::cout << "fail reading data!\n";
     if (!test.ReadGraphData(file, graph_rev, true)) std::cout << "fail reading data!\n";        
-    test.top5SCC(graph, graph_rev);
+    test.top5scc(graph, graph_rev);
     return 0;
 } 
  */
@@ -138,7 +138,7 @@ public:
     void findSCC (Graph& g, Graph& g_rev) {
         setVertexNum(this->max_vertex_num);
         SetFinishingTime(g_rev);
-        std::cout << "set finishing time done.\n";
+        //std::cout << "set finishing time done.\n";
         SetLeader(g);
         //print(this->f);
         //print(this->leader);
