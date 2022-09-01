@@ -1,11 +1,12 @@
-#include "traveling_salesman_problem_approximate.h"
+#include "2sat.h"
 
 int main ()
 {
-    TSP_APPROXIMATE test;
-    if (!ReadData("../data/_ae5a820392a02042f87e3b437876cf19_nn.txt", true, test))
-        std::cout << "fail reading data!\n";
-    std::cout.precision(10); // keep double precision
-    std::cout << test.Greedy_TSP() << "\n";
+    TwoSAT test;
+    const std::string file_name = "../data/2sat/_02c1945398be467219866ee1c3294d2d_2sat";
+    for (int i = 1; i <= 6; ++i) {
+        std::cout << test.Satisfiable(file_name + std::to_string(i) + ".txt");
+    }
+    std::cout << "\n";
     return 0;
 }
