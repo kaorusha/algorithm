@@ -1,12 +1,11 @@
 # ifndef KOSARAJU_H_
 # define KOSARAJU_H_
-# include <sstream>
-# include <fstream>
-# include <iostream>
-# include <vector>
-# include <unordered_map>
-
-typedef std::unordered_map<int, std::vector<int>> Graph;
+# include "util.h"
+/**
+ * @brief adjacent list of label, label are nonnegative integers, 0 is invalid.
+ * 
+ */
+typedef std::vector<std::vector<int>> Graph;
 /**
  * @brief Kosaraju algorithm (the key: scc is the same for reversed graph)
  * example:
@@ -18,7 +17,7 @@ int main ()
     const std::string file = "../data/scc/_410e934e6553ac56409b2cb7096a44aa_SCC.txt"; // node num = 875714
     if (!test.ReadGraphData(file, graph)) std::cout << "fail reading data!\n";
     if (!test.ReadGraphData(file, graph_rev, true)) std::cout << "fail reading data!\n";        
-    test.findSCC(graph, graph_rev);
+    test.top5SCC(graph, graph_rev);
     return 0;
 } 
  */
@@ -66,7 +65,7 @@ public:
 
         // Declare single line of file:
         std::string line;
-        
+        graph.resize(this->max_vertex_num + 1);
         // Run over each single line:
         while (std::getline(is, line)) {
             std::istringstream linestream(line);
@@ -130,19 +129,8 @@ public:
             }
         }
     }
-    void print(Graph& g) {
-        for (auto& i:g) {
-            std::cout << i.first << "\t";
-            print(i.second);
-        }
-    }
-    template <class T>
-    void print(T& v) {
-        for (auto i:v) std::cout << i << ", ";
-        std::cout << "\n";
-    }
 /**
- * @brief given graph and reverse graph, find the top 5 strongly connected components (SCC)
+ * @brief given graph and reverse graph, find strongly connected components (SCC)
  * 
  * @param g graph data
  * @param g_rev reversed graph data
@@ -154,6 +142,28 @@ public:
         SetLeader(g);
         //print(this->f);
         //print(this->leader);
+    }
+    /**
+     * @brief find the leader label of given vertex label
+     * 
+     * @param i given vertex label
+     * @return int the leader vertex label (0 means invalid label)
+     */
+    int FindLeader(int i) {
+        if (i > this->max_vertex_num) {
+            std::cout << "index exceed number of vertices";
+            return 0; // invalid label
+        }
+        return this->leader[i];
+    }
+    /**
+     * @brief print top 5 largest scc leader
+     * 
+     * @param g 
+     * @param g_rev 
+     */
+    void top5scc(Graph& g, Graph& g_rev) {
+        findSCC(g, g_rev);
         // make a list to count leader and memorize top 5 leader label
         std::vector<int> count(this->max_vertex_num + 1, 0);
         for (int i = 1; i <= this->max_vertex_num; ++i) ++count[leader[i]];
